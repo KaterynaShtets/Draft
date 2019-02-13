@@ -1,0 +1,31 @@
+﻿@model Tut20.Models.StatSolvingViewModel
+@{
+    ViewData["Title"] = "Solving";
+}
+<h2>Solving</h2>
+<style>
+    input[type=text] {
+        width: 100px
+    }
+    input[type=number] {
+        width: 50px;
+    }
+</style>
+<div>
+    <form method="get">
+        <label asp-for="BackSample">Back <input type="text" asp-for="BackSample" /></label>
+        <label asp-for="Hours">: <input type="number" asp-for="Hours" title="Hours" /></label>
+        <label asp-for="ForeSample">Fore <input type="text" asp-for="ForeSample" /></label>
+        <input type="submit" value="Submit" />
+</form>
+    <span id="info" style="color: red">▪</span>
+</div>
+<canvas width="400" height="300" id="canvas"></canvas>
+
+@section scripts {
+    <script>
+        var solvByWeeks = @(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SolvByWeeks));
+    </script>
+    <script src="~/js/stat_solving.js"></script>
+}
+
