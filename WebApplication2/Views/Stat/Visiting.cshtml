@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Tut20.Models.Reading>
+@{
+    ViewData["Title"] = "Visiting";
+}
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    Filters
+    <input type="text" id="rfilter" value="^[1-9ab]" />
+    <input type="text" id="gfilter" value="^[1-5]" />
+    <input type="text" id="bfilter" value="^[6-9ab]" />
+    <span id="info"></span>
+</div>
+<canvas width="500" height="300" id="canvas"></canvas>
+
+@section scripts{
+    <script>
+         var titles = @(new Microsoft.AspNetCore.Html.HtmlString(ViewBag.Titles));
+         var students = @(new Microsoft.AspNetCore.Html.HtmlString(ViewBag.Students));
+         var visits = @(new Microsoft.AspNetCore.Html.HtmlString(ViewBag.Visits));
+    </script>
+    <script src="~/js/Series.js"></script>
+    <script src="~/js/stat_visiting.js"></script>
+}
