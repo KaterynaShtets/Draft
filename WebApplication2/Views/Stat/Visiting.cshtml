@@ -2,22 +2,32 @@
 @{
     ViewData["Title"] = "Visiting";
 }
-<h2>@ViewData["Title"]</h2>
+<h2>Visiting</h2>
+
+<form id="period_sample" method="post">
+    Period
+    <input type="number" name="period" value="@ViewBag.Period" title="Число дней с момента открытия лекции" />
+    Sample
+    <input type="text" name="sample" value="@ViewBag.Sample" title="Фильтр для определения момента окрытия" />
+    <input type="submit" value="Submit" />
+</form>
 
 <div>
     Filters
-    <input type="text" id="rfilter" value="^[1-9ab]" />
-    <input type="text" id="gfilter" value="^[1-5]" />
-    <input type="text" id="bfilter" value="^[6-9ab]" />
-    <span id="info"></span>
+    <input type="text" id="rfilter" value="@ViewBag.Sample" />
+    <input type="text" id="gfilter" value="" />
+    <input type="text" id="bfilter" value="" />
+    <span id="info" class="well well-sm"></span>
 </div>
-<canvas width="500" height="300" id="canvas"></canvas>
+<div>
+    <span id="info2" class="well well-sm"></span>
+    <canvas width="500" height="300" id="canvas2"></canvas>
+</div>
 
-@section scripts{
+
+@section scripts {
     <script>
-         var titles = @(new Microsoft.AspNetCore.Html.HtmlString(ViewBag.Titles));
-         var students = @(new Microsoft.AspNetCore.Html.HtmlString(ViewBag.Students));
-         var visits = @(new Microsoft.AspNetCore.Html.HtmlString(ViewBag.Visits));
+         var data = @(new Microsoft.AspNetCore.Html.HtmlString(ViewBag.Data));
     </script>
     <script src="~/js/Series.js"></script>
     <script src="~/js/stat_visiting.js"></script>

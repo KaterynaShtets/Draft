@@ -36,15 +36,17 @@ body {
     }
 }
 
-/* ---------------------------------------------------------------- */
-#canvas {
-   /*border: thin solid;*/
+/* ------------for Stat/Visiting page---------- */
+
+#canvas2 {
+    border: thin solid;
 }
 
-#rfilter, #gfilter, #bfilter{
+#rfilter, #gfilter, #bfilter {
     border: solid 2px;
     width: 100px;
     margin-right: 5px;
+    margin-bottom: 5px;
 }
 
 #rfilter {
@@ -57,4 +59,13 @@ body {
 
 #bfilter {
     border-color: blue;
+}
+
+#info2 {
+    visibility: hidden;
+    position: absolute;
+}
+
+#period_sample {
+    margin-bottom: 5px;
 }

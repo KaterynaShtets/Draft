@@ -78,13 +78,33 @@ namespace WebApplication2.Controllers
             return View(model);
         }
 
-
         public IActionResult Visiting()
+        {
+            ViewBag.Period = 365;
+            ViewBag.Sample = "^[1-9ab]";
+            ViewBag.Data = GetVisitingData(ViewBag.Period, ViewBag.Sample);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Visiting(int period = 365, string sample = "")
+        {
+            if (sample == null)
+                sample = "";
+            ViewBag.Data = GetVisitingData(period, sample);
+            ViewBag.Period = period;
+            ViewBag.Sample = sample;
+            return View();
+        }
+
+
+
+        string GetVisitingData(int period, string sample)
         {
             // ------- это про лекции ----------
 
             var lecId_title_s = from l in _db.Lectures
-                                where l.TutorName == "opr"
+                                where l.TutorName == "opr"    ////////////////
                                 where l.IsPublic
                                 orderby l.Title
                                 select new { LecId = l.Id, l.Title };
@@ -92,8 +112,20 @@ namespace WebApplication2.Controllers
             var lecId_s = from li in lecId_title_s
                           select li.LecId;
 
-            var lecId_begin_s = from r in _db.Readings
-                                where lecId_s.Contains(r.LecId)
+            var lecId_begin_userName_s = (from r in _db.Readings
+                                          where lecId_s.Contains(r.LecId)
+                                          select new { r.LecId, r.Begin, r.UserName })
+                                  .ToArray();
+
+            Regex regex = new Regex(sample);
+
+            var lecId_begin_s1 = from r in lecId_begin_userName_s
+                                 where regex.IsMatch(r.UserName)
+                                 select new { r.LecId, r.Begin };
+
+
+
+            var lecId_begin_s = from r in lecId_begin_s1
                                 select new { r.LecId, r.Begin } into item
                                 group item by item.LecId into g
                                 select new { LecId = g.Key, Begin = g.Min(x => x.Begin) };
@@ -109,7 +141,7 @@ namespace WebApplication2.Controllers
             var userName_lecId_s = (
                 from r in _db.Readings
                 join lb in lecId_begin_s on r.LecId equals lb.LecId
-                where r.Begin < lb.Begin + TimeSpan.FromDays(1000)
+                where r.Begin < lb.Begin + TimeSpan.FromDays(period)
                 select new { r.UserName, r.LecId })
                 .Distinct()
                 .ToArray();
@@ -148,22 +180,19 @@ namespace WebApplication2.Controllers
             // convert every object like { UserName = "1Tukalo", LecId = 492 } to array like [1, 19] 
             // and group arrays by first element
             var groupedVisits = from v in userName_lecId_s
-                         select new int[] {
+                                select new int[] {
                                Array.IndexOf(lecIds, v.LecId),
                                Array.IndexOf(userNames, v.UserName),
                           } into item
-                         group item by item[0];
+                                group item by item[0];
 
             var visits = groupedVisits
                 .OrderBy(g => g.Key)
                 .Select(g => g.Select(m => m[1]));
 
-            ViewBag.Titles = JsonConvert.SerializeObject(titles);
-            ViewBag.Students = JsonConvert.SerializeObject(students);
-            ViewBag.Visits = JsonConvert.SerializeObject(visits);
-
-            return View();
+            return JsonConvert.SerializeObject(new { titles, students, visits });
         }
+
 
         public IActionResult Privacy()
         {
