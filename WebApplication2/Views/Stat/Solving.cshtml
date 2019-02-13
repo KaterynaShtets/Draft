@@ -13,12 +13,22 @@
 </style>
 <div>
     <form method="get">
-        <label asp-for="BackSample">Back <input type="text" asp-for="BackSample" /></label>
-        <label asp-for="Hours">: <input type="number" asp-for="Hours" title="Hours" /></label>
-        <label asp-for="ForeSample">Fore <input type="text" asp-for="ForeSample" /></label>
-        <input type="submit" value="Submit" />
-</form>
-    <span id="info" style="color: red">▪</span>
+        <label asp-for="BackSample">Фон <input type="text" asp-for="BackSample" title="Шаблон для выбора фоновой группы"/></label>
+        <label asp-for="Hours">: <input type="number" asp-for="Hours" title="Время в часах" /></label>
+        <label asp-for="ForeSample">Цель <input type="text" asp-for="ForeSample" title="Шаблон для выбора целевой группы"/></label>
+        <input type="submit" value="Submit" class="btn-primary" />
+        <button type="button" data-toggle="collapse" data-target="#collapseExample" 
+                aria-expanded="false" aria-controls="collapseExample">H</button>
+    </form>
+
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            График показывает количество задач, решенных целевой группой в течение первых n часов с момента публикации задачи.
+            <br />Моментом публикации задачи считается время, когда получено первое решение этой задачи из фоновой группы.
+            <br />Для получения корректного результата целевая группа должна быть подмножеством фоновой.
+        </div>
+    </div>
+    <div id="info" style="color: red">▪</div>
 </div>
 <canvas width="400" height="300" id="canvas"></canvas>
 

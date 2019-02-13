@@ -64,6 +64,9 @@ namespace WebApplication2.Controllers
                                  where (s.When - tw.When).TotalHours < model.Hours
                                  select s.When;
 
+            if (restrictedWhens.Count() == 0)
+                return Content("Решений нет.");
+
             // разбить по неделям
             model.SolvByWeeks = new List<int>();
             var dt = TimeSpan.FromDays(7);

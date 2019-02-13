@@ -1,6 +1,7 @@
 ﻿let canvas = document.getElementById("canvas");
 let backFilter = document.getElementById("backFilter");
 let foreFilter = document.getElementById("foreFilter");
+let info = document.getElementById("info");
 
 const PLOT_MARGIN = 15, PLOT_MARGIN_2 = PLOT_MARGIN * 2;
 
@@ -13,6 +14,8 @@ let Y = y => -(y - Y0);
 // solvByWeeks - решения по неделям
 let stepX = 20;
 let scaleY = (canvas.height - PLOT_MARGIN_2) / Math.max(...solvByWeeks);
+
+
 
 canvas.addEventListener('mousemove', function (e) {
     let x = X(e.clientX - canvas.offsetLeft);
