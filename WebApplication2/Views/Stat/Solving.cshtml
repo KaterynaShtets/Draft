@@ -3,14 +3,6 @@
     ViewData["Title"] = "Solving";
 }
 <h2>Solving</h2>
-<style>
-    input[type=text] {
-        width: 100px
-    }
-    input[type=number] {
-        width: 50px;
-    }
-</style>
 <div>
     <form method="get">
         <label asp-for="BackSample">Фон <input type="text" asp-for="BackSample" title="Шаблон для выбора фоновой группы"/></label>
@@ -30,7 +22,7 @@
     </div>
     <div id="info" style="color: red">▪</div>
 </div>
-<canvas width="400" height="300" id="canvas"></canvas>
+<canvas width="500" height="300" id="canvasSolving"></canvas>
 
 @section scripts {
     <script>

@@ -1,4 +1,4 @@
-﻿let canvas = document.getElementById("canvas");
+﻿let canvas = document.getElementById("canvasSolving");
 let backFilter = document.getElementById("backFilter");
 let foreFilter = document.getElementById("foreFilter");
 let info = document.getElementById("info");

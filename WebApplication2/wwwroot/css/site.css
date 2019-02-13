@@ -38,7 +38,7 @@ body {
 
 /* ------------for Stat/Visiting page---------- */
 
-#canvas2 {
+canvas {
     border: thin solid;
 }
 
@@ -68,4 +68,13 @@ body {
 
 #period_sample {
     margin-bottom: 5px;
+}
+
+/* ------------for Stat/Solving page---------- */
+#BackSample, #ForeSample {
+    width: 100px
+}
+
+#Hours {
+    width: 50px;
 }

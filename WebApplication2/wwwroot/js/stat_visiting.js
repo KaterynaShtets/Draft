@@ -1,4 +1,4 @@
-let canvas = document.getElementById("canvas2");
+﻿let canvas = document.getElementById("canvas2");
 let rfilter = document.getElementById("rfilter");
 let gfilter = document.getElementById("gfilter");
 let bfilter = document.getElementById("bfilter");
@@ -22,7 +22,7 @@ canvas.addEventListener('mousemove', function (e) {
 
     let point = series.getNearestPoint(x, y);
     if (point) {
-        info.innerHTML = `${data.titles[point.x]} (${point.y})`;
+        info.innerHTML = `▪ ${data.titles[point.x]} (${point.y})`;
     }
 });
 
