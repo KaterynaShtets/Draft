@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Marks";
+}
+<h2>Marks</h2>
+<table>
+    @foreach (var user in ViewBag.UsersMark)
+    {
+        <tr>
+            <td>
+                @user.Key
+            </td>
+            <td>
+                @user.Value
+            </td>
+        </tr>
+    }
+</table>
+
+<hr />
+<div>
+    <form asp-action="Data" method="post" enctype="multipart/form-data">
+        <label for="file">
+            Choose file to upload
+            <input type="file" id="file" name="file" style="display:inline" />
+        </label>
+        <input type="submit" value="New Data" />
+    </form>
+</div>
+

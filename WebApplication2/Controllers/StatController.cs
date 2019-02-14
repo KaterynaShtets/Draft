@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using MathNet.Numerics.Statistics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Tut20.Models;
@@ -94,6 +97,58 @@ namespace WebApplication2.Controllers
             ViewBag.Data = GetVisitingData(period, sample);
             ViewBag.Period = period;
             ViewBag.Sample = sample;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Data(IFormFile file)
+        {
+            if (file == null)
+                return Content("error with file");
+
+            // Clear old records
+            var marksToDelete = _db.Marks.Where(m => m.Owner == "opr");    //todo: User.Identity.Name
+            _db.Marks.RemoveRange(marksToDelete);
+            _db.SaveChanges();
+
+            // Add new records
+            using (TextReader reader = new StreamReader(file.OpenReadStream()))
+            {
+                var head = reader.ReadLine();
+                var heads = head.Split("\t", StringSplitOptions.None);
+                while (true)
+                {
+                    var line = reader.ReadLine();
+                    if (line == null) break;
+                    var lines = line.Split("\t", StringSplitOptions.None);
+                    var mark = new Mark(heads, lines, "opr");      //todo: User.Identity.Name
+                    _db.Marks.Add(mark);
+                }
+
+            }
+            _db.SaveChanges();
+            return RedirectToAction("Marks");
+        }
+
+        public IActionResult Marks()
+        {
+            var users_by_tutors = from u in _db.Marks
+                                  where u.Owner == "opr"           //todo: User.Identity.Name
+                                  group u by u.TutorName into g
+                                  select new { g.Key, Mark = g.Select(x => Convert.ToDouble((x.Cp1 + x.Cp2 + x.Lab) / 3 + x.Bonus)) };
+
+
+            Dictionary<string, double> average = new Dictionary<string, double>();
+
+            foreach (var u in users_by_tutors)
+            {
+                var stat = new DescriptiveStatistics(u.Mark);
+                var mean = stat.Mean;
+                average.Add(u.Key, mean);
+
+            }
+
+            ViewBag.UsersMark = average;
             return View();
         }
 
